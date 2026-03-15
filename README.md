@@ -43,7 +43,41 @@ The goal was to clearly define the problem scope, set up development infrastruct
 - Created Sequence Diagram for AI paper evaluation flow  
 - Created Activity Diagram for login → upload → report generation flow  
 - Revised Class Diagram with AI Evaluation & Summary modules  
-- Built UI prototype screens (Login, Dashboard, Upload, Results, Admin Panel)  
+- Built UI prototype screens (Login, Dashboard, Upload, Results, Admin Panel)
+
+
+## Week 4  – Dynamic Analysis
+- Focus shifted from structural design to system behavior analysis.
+- Identified system workflows and user interaction flow.
+- Designed UML Activity Diagram to represent the end-to-end process of publication summary generation.
+- Modeled major activities like faculty login, publication upload, input validation, NLP content extraction, summary generation, scoring, and database storage.
+- Implemented decision nodes and parallel processing (fork/join) in the workflow.
+- Defined dynamic use cases based on real user scenarios.
+- Updated documentation and project repository with activity diagram and dynamic analysis notes.
+
+
+## Week 5 - Interaction Modeling
+- Focused on interaction modeling using UML Sequence Diagram.
+- Analyzed object communication and message flow between system components.
+- Modeled interactions between Faculty, Controller, NLP Module, Summary Generator, Score Calculator, and Database.
+- Defined message passing and execution order during research paper upload and summary generation.
+- Refined object responsibilities and system collaboration logic.
+- Ensured alignment between sequence diagram and activity workflow created in the previous sprint.
+- Updated documentation and repository with sequence diagram and interaction design artifacts.
+
+## Week 6 - Detailed Class Design and System Packaging
+- Project focused on detailed design phase using object-oriented design principles
+- Class structure, relationships, interfaces, and modular packaging were defined
+- System architecture refined for maintainability, modularity, and scalability
+- Factory Pattern and Strategy Pattern adopted for flexible summary generation
+- Key classes finalized: faculty data, publication management, summary generation, and data storage
+- UML Class Diagram created with methods, visibility (+/–/#), inheritance, and interface implementation
+- UML Package Diagram created to show dependencies and modular structure
+- System organized into logical packages: models, services, controllers, NLP processing, and database layer
+- OOP concepts applied — encapsulation, inheritance, and polymorphism
+- Two summarization strategies planned: keyword-based and AI/NLP-based
+- Git updated with UML diagrams, class design docs, and architecture folder
+- Testing limited to design validation: class responsibility, interface usage, dependency analysis, and package cohesion
 
 ### 🧱 UML Class Diagram
 
