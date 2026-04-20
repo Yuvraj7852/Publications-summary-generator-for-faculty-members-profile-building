@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block auth_content %}
+<div class="auth-wrapper">
+  <div class="auth-bg"></div>
+  <div class="auth-grid"></div>
+
+  <div class="auth-card fade-up" style="max-width:480px;">
+    <div class="auth-logo">
+      <div class="logo-icon">✨</div>
+      <h1>Create Account</h1>
+      <p>Join the research community</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('register') }}">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" class="form-control"
+               placeholder="Dr. Jane Smith" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" class="form-control"
+               placeholder="you@university.edu" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control"
+               placeholder="Min. 6 characters" required minlength="6">
+      </div>
+
+      <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+               placeholder="Repeat your password" required>
+      </div>
+
+      <div class="form-group">
+        <label>Select Your Role</label>
+        <div class="role-selector">
+          <div class="role-option">
+            <input type="radio" id="role-faculty" name="role" value="faculty" checked>
+            <label class="role-label" for="role-faculty">
+              <span class="role-icon">🎓</span>
+              <span>Faculty</span>
+              <span style="font-size:0.7rem;color:var(--text3);">Upload papers</span>
+            </label>
+          </div>
+          <div class="role-option">
+            <input type="radio" id="role-student" name="role" value="student">
+            <label class="role-label" for="role-student">
+              <span class="role-icon">📚</span>
+              <span>Student</span>
+              <span style="font-size:0.7rem;color:var(--text3);">Browse research</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">
+        🎉 Create Account
+      </button>
+    </form>
+
+    <div class="divider"><span>Already have an account?</span></div>
+
+    <a href="{{ url_for('login') }}" class="btn btn-outline btn-block">
+      🔑 Sign In
+    </a>
+  </div>
+</div>
+{% endblock %}
