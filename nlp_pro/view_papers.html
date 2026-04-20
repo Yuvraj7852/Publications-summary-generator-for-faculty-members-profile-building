@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}My Papers{% endblock %}
+
+{% block content %}
+<div class="page-header fade-up">
+  <div>
+    <h2>My Papers</h2>
+    <p>All {{ papers|length }} paper{{ 's' if papers|length != 1 else '' }} you have uploaded</p>
+  </div>
+  <a href="{{ url_for('upload_paper') }}" class="btn btn-primary">
+    📤 Upload New Paper
+  </a>
+</div>
+
+{% if papers %}
+<div class="papers-list fade-up-2">
+  {% for paper in papers %}
+  <div class="paper-card">
+    <div class="paper-meta">
+      <span class="tag date">{{ paper['upload_date']|short_date }}</span>
+      {% set badge = paper['score']|score_badge %}
+      <span class="score-badge"
+            style="background:{{ badge[1] }}22;color:{{ badge[1] }};border:1px solid {{ badge[1] }}44;">
+        {{ "%.1f"|format(paper['score'] or 0) }}% · {{ badge[0] }}
+      </span>
+    </div>
+    <div class="paper-title">{{ paper['title'] }}</div>
+    <div class="paper-summary">{{ paper['summary'] }}</div>
+    {% if paper['keywords'] %}
+    <div class="keywords-list mt-2">
+      {% for kw in paper['keywords'].split(',')[:8] %}
+      <span class="keyword-chip">{{ kw.strip() }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="paper-footer">
+      <span class="text-xs text-muted font-mono">{{ paper['file_path'] }}</span>
+      <div class="flex gap-1">
+        <a href="{{ url_for('result_page', paper_id=paper['id']) }}"
+           class="btn btn-outline btn-sm">View Result</a>
+        <a href="{{ url_for('serve_file', filename=paper['file_path']) }}"
+           class="btn btn-teal btn-sm" target="_blank">📥 PDF</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📭</div>
+  <h3>No papers uploaded yet</h3>
+  <p>Upload your first research paper to get AI-generated summaries and quality scores.</p>
+  <a href="{{ url_for('upload_paper') }}" class="btn btn-primary mt-2">📤 Upload Now</a>
+</div>
+{% endif %}
+{% endblock %}

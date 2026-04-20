@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Upload Paper{% endblock %}
+
+{% block content %}
+<div class="page-header fade-up">
+  <div>
+    <h2>Upload Research Paper</h2>
+    <p>Submit a PDF — AI will extract, summarize, and score it automatically</p>
+  </div>
+  <a href="{{ url_for('faculty_dashboard') }}" class="btn btn-outline">← Back</a>
+</div>
+
+<div style="max-width:680px;" class="fade-up-2">
+  <div class="card">
+    <form method="POST" action="{{ url_for('upload_paper') }}"
+          enctype="multipart/form-data" id="uploadForm">
+
+      <!-- Drop zone -->
+      <div class="form-group">
+        <label>PDF File</label>
+        <div class="upload-zone" id="dropZone">
+          <input type="file" name="pdf_file" id="pdf_file"
+                 accept=".pdf" required onchange="handleFileSelect(this)">
+          <div class="upload-icon" id="uploadIcon">📄</div>
+          <div id="uploadText">
+            <strong>Drop your PDF here</strong> or click to browse
+          </div>
+          <div class="upload-hint">Maximum file size: 16 MB · PDF only</div>
+          <div id="fileName" style="display:none;margin-top:0.5rem;font-family:var(--font-mono);font-size:0.83rem;color:var(--teal);"></div>
+        </div>
+      </div>
+
+      <!-- Custom title (optional) -->
+      <div class="form-group">
+        <label for="title">Paper Title <span style="color:var(--text3)">(optional — auto-detected if blank)</span></label>
+        <input type="text" id="title" name="title" class="form-control"
+               placeholder="e.g. Deep Learning for Medical Image Segmentation">
+      </div>
+
+      <!-- What happens next -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);
+                  padding:1rem 1.25rem;margin-bottom:1.25rem;">
+        <div style="font-size:0.82rem;font-family:var(--font-mono);color:var(--text3);margin-bottom:0.6rem;">
+          WHAT HAPPENS AFTER UPLOAD
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;font-size:0.85rem;">
+          <div>📑 Text extraction from PDF</div>
+          <div>🧹 Text cleaning &amp; normalization</div>
+          <div>🤖 AI summarization (DistilBART)</div>
+          <div>🔑 Keyword extraction</div>
+          <div>📊 Quality score calculation</div>
+          <div>💾 Stored in database</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">
+        🚀 Upload &amp; Analyze
+      </button>
+    </form>
+  </div>
+
+  <!-- Processing indicator (hidden by default) -->
+  <div id="processingMsg" style="display:none;" class="card mt-2"
+       style="text-align:center;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.5rem 0;">
+      <div class="spinner"></div>
+      <div>
+        <div style="font-weight:500;">Processing your paper…</div>
+        <div class="text-xs text-muted font-mono">AI model is generating summary. This may take 30–60 seconds.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const dropZone = document.getElementById('dropZone');
+
+['dragenter','dragover'].forEach(evt => {
+  dropZone.addEventListener(evt, e => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+});
+
+['dragleave','drop'].forEach(evt => {
+  dropZone.addEventListener(evt, e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+  });
+});
+
+dropZone.addEventListener('drop', e => {
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    document.getElementById('pdf_file').files = e.dataTransfer.files;
+    showFileName(file.name);
+  }
+});
+
+function handleFileSelect(input) {
+  if (input.files.length > 0) {
+    showFileName(input.files[0].name);
+  }
+}
+
+function showFileName(name) {
+  document.getElementById('uploadIcon').textContent = '✅';
+  document.getElementById('uploadText').innerHTML = '<strong>File selected</strong>';
+  const fn = document.getElementById('fileName');
+  fn.textContent = name;
+  fn.style.display = 'block';
+}
+
+document.getElementById('uploadForm').addEventListener('submit', function() {
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').innerHTML = '<div class="spinner"></div> Processing…';
+  document.getElementById('processingMsg').style.display = 'block';
+});
+</script>
+{% endblock %}
